@@ -323,6 +323,18 @@ resource "confluent_kafka_topic" "customers_enriched" {
         id = confluent_kafka_cluster.main.id
     }
 }
+
+resource "confluent_kafka_topic" "ismail_test" {
+    topic_name = "ismail.test"
+    rest_endpoint = confluent_kafka_cluster.main.rest_endpoint
+    credentials {
+        key = confluent_api_key.app_manager_kafka.id
+        secret = confluent_api_key.app_manager_kafka.secret
+    }
+    kafka_cluster {
+        id = confluent_kafka_cluster.main.id
+    }
+}
 # SCHEMAS
 # --------------------
 resource "confluent_schema" "customer_info" {
@@ -364,6 +376,22 @@ resource "confluent_schema" "customer_enriched" {
         id = confluent_schema_registry_cluster.main.id
     }
 }
+
+resource "confluent_schema" "ismail_test" {
+    subject_name = "ismail.test-value"
+    format = "AVRO"
+    schema = file("../schemas/avro/payment.avsc")
+    rest_endpoint = confluent_schema_registry_cluster.main.rest_endpoint
+    
+    credentials {
+        key = confluent_api_key.app_manager_sr.id
+        secret = confluent_api_key.app_manager_sr.secret
+    }
+    schema_registry_cluster {
+        id = confluent_schema_registry_cluster.main.id
+    }
+}
+
 # BUSINESS METADATA
 # --------------------
 resource "confluent_business_metadata" "domain_details" {
