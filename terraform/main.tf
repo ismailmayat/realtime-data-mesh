@@ -6,7 +6,18 @@ terraform {
             source = "confluentinc/confluent"
             version = "1.75.0"
         }
+     random = {
+      source  = "hashicorp/random"
+      version = "3.3.2"
     }
+  }
+  cloud {
+    organization = "ismail_test_bed"
+    workspaces {
+      name = "realtime-data-mesh"
+    }
+  }
+  required_version = ">= 1.1.0"
 }
 # RANDOM IDS
 # --------------------
