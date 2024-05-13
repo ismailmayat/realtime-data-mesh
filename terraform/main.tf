@@ -6,10 +6,14 @@ terraform {
             source = "confluentinc/confluent"
             version = "1.75.0"
         }
-     random = {
-      source  = "hashicorp/random"
-      version = "3.3.2"
-    }
+        random = {
+            source  = "hashicorp/random"
+            version = "3.3.2"
+        }
+        azurerm = {
+            source  = "hashicorp/azurerm"
+            version = "~> 3.0.2"
+        }
   }
   cloud {
     organization = "ismail_test_bed"
@@ -19,6 +23,15 @@ terraform {
   }
   required_version = ">= 1.1.0"
 }
+
+provider "azurerm" {
+  features {}
+  subscription_id = var.subscription_id
+  client_id       = var.client_id
+  client_secret   = var.client_secret
+  tenant_id       = var.tenant_id
+}
+
 # RANDOM IDS
 # --------------------
 resource "random_id" "confluent" {
@@ -651,3 +664,10 @@ resource "local_file" "client_properties" {
     basic.auth.credentials.source=USER_INFO
     EOT
 }
+
+resource "azurerm_key_vault_secret" "api_key_secret" {
+  name         = confluent_api_key.clients_kafka.id  # Name of the secret in Azure Key Vault
+  value        = confluent_api_key.clients_kafka.secret             # Value of your API key
+  key_vault_id = "subscriptions/a23ea812-1d8a-41f1-84b2-806938e8e2e6/resourceGroups/azure-mayat-demo/providers/Microsoft.KeyVault/vaults/mayat-key-vault"
+}
+
