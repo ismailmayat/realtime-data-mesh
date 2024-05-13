@@ -668,6 +668,7 @@ resource "local_file" "client_properties" {
 resource "azurerm_key_vault_secret" "api_key_secret" {
   name         = confluent_api_key.clients_kafka.id  # Name of the secret in Azure Key Vault
   value        = confluent_api_key.clients_kafka.secret             # Value of your API key
-  key_vault_id = "subscriptions/a23ea812-1d8a-41f1-84b2-806938e8e2e6/resourceGroups/azure-mayat-demo/providers/Microsoft.KeyVault/vaults/mayat-key-vault"
+  key_vault_id = "/subscriptions/a23ea812-1d8a-41f1-84b2-806938e8e2e6/resourceGroups/azure-mayat-demo/providers/Microsoft.KeyVault/vaults/mayat-key-vault"
+                  
 }
 
